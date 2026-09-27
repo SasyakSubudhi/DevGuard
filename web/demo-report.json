@@ -1,0 +1,327 @@
+{
+  "status": "resolved",
+  "repo": "demo_repo",
+  "logs": {
+    "status": "ok",
+    "events": [
+      {
+        "line": 1,
+        "timestamp": "2026-09-26 10:00:00",
+        "text": "2026-09-26 10:00:00 ERROR order summary failed order_id=ORDER-1042"
+      },
+      {
+        "line": 2,
+        "timestamp": null,
+        "text": "Traceback (most recent call last):"
+      },
+      {
+        "line": 3,
+        "timestamp": null,
+        "text": "  File \"app.py\", line 5, in <module>"
+      },
+      {
+        "line": 5,
+        "timestamp": null,
+        "text": "  File \"order_service.py\", line 9, in summarize_order"
+      },
+      {
+        "line": 7,
+        "timestamp": null,
+        "text": "  File \"pricing.py\", line 3, in average_price"
+      },
+      {
+        "line": 9,
+        "timestamp": null,
+        "text": "ZeroDivisionError: division by zero"
+      }
+    ],
+    "frames": [
+      {
+        "path": "app.py",
+        "line": 5
+      },
+      {
+        "path": "order_service.py",
+        "line": 9
+      },
+      {
+        "path": "pricing.py",
+        "line": 3
+      }
+    ],
+    "terms": [
+      "order",
+      "summary",
+      "crashes",
+      "when",
+      "has",
+      "priced",
+      "items",
+      "order_id",
+      "app",
+      "module",
+      "order_service",
+      "summarize_order",
+      "pricing",
+      "average_price",
+      "zerodivisionerror",
+      "division",
+      "zero"
+    ],
+    "total_lines": 9,
+    "note": "Log line numbers refer to the last 1 MB when a log is larger than 1 MB."
+  },
+  "code": {
+    "status": "ok",
+    "files_scanned": 4,
+    "stack_matches": 3,
+    "matches": [
+      {
+        "path": "app.py",
+        "line": 5,
+        "excerpt": "3: \n4: if __name__ == \"__main__\":\n5:     print(summarize_order(\"ORDER-1042\", []))"
+      },
+      {
+        "path": "order_service.py",
+        "line": 9,
+        "excerpt": "7:         \"order_id\": order_id,\n8:         \"item_count\": len(items),\n9:         \"average_price\": average_price(prices),\n10:     }\n11: "
+      },
+      {
+        "path": "pricing.py",
+        "line": 3,
+        "excerpt": "1: def average_price(prices: list[float]) -> float:\n2:     \"\"\"Return the average price, or zero when an order has no priced items.\"\"\"\n3:     if not prices:\n4:         return 0.0\n5:     return sum(prices) / len(prices)"
+      },
+      {
+        "path": "pricing.py",
+        "line": 2,
+        "excerpt": "1: def average_price(prices: list[float]) -> float:\n2:     \"\"\"Return the average price, or zero when an order has no priced items.\"\"\"\n3:     if not prices:\n4:         return 0.0"
+      },
+      {
+        "path": "order_service.py",
+        "line": 4,
+        "excerpt": "2: \n3: \n4: def summarize_order(order_id: str, items: list[dict]) -> dict:\n5:     prices = [float(item[\"price\"]) for item in items if item.get(\"price\") is not None]\n6:     return {"
+      },
+      {
+        "path": "app.py",
+        "line": 1,
+        "excerpt": "1: from order_service import summarize_order\n2: \n3: "
+      },
+      {
+        "path": "pricing.py",
+        "line": 5,
+        "excerpt": "3:     if not prices:\n4:         return 0.0\n5:     return sum(prices) / len(prices)"
+      },
+      {
+        "path": "tests/test_order_service.py",
+        "line": 7,
+        "excerpt": "5: sys.path.insert(0, str(Path(__file__).resolve().parents[1]))\n6: \n7: from order_service import summarize_order\n8: \n9: "
+      },
+      {
+        "path": "tests/test_order_service.py",
+        "line": 11,
+        "excerpt": "9: \n10: class OrderServiceTests(unittest.TestCase):\n11:     def test_summarizes_priced_items(self):\n12:         result = summarize_order(\"ORDER-1\", [{\"price\": 10}, {\"price\": 20}])\n13:         self.assertEqual(result[\"item_count\"], 2)"
+      },
+      {
+        "path": "tests/test_order_service.py",
+        "line": 12,
+        "excerpt": "10: class OrderServiceTests(unittest.TestCase):\n11:     def test_summarizes_priced_items(self):\n12:         result = summarize_order(\"ORDER-1\", [{\"price\": 10}, {\"price\": 20}])\n13:         self.assertEqual(result[\"item_count\"], 2)\n14:         self.assertEqual(result[\"average_price\"], 15.0)"
+      },
+      {
+        "path": "tests/test_order_service.py",
+        "line": 16,
+        "excerpt": "14:         self.assertEqual(result[\"average_price\"], 15.0)\n15: \n16:     def test_empty_order_has_zero_average(self):\n17:         result = summarize_order(\"ORDER-2\", [])\n18:         self.assertEqual(result[\"item_count\"], 0)"
+      },
+      {
+        "path": "tests/test_order_service.py",
+        "line": 17,
+        "excerpt": "15: \n16:     def test_empty_order_has_zero_average(self):\n17:         result = summarize_order(\"ORDER-2\", [])\n18:         self.assertEqual(result[\"item_count\"], 0)\n19:         self.assertEqual(result[\"average_price\"], 0.0)"
+      },
+      {
+        "path": "order_service.py",
+        "line": 1,
+        "excerpt": "1: from pricing import average_price\n2: \n3: "
+      },
+      {
+        "path": "order_service.py",
+        "line": 5,
+        "excerpt": "3: \n4: def summarize_order(order_id: str, items: list[dict]) -> dict:\n5:     prices = [float(item[\"price\"]) for item in items if item.get(\"price\") is not None]\n6:     return {\n7:         \"order_id\": order_id,"
+      },
+      {
+        "path": "order_service.py",
+        "line": 7,
+        "excerpt": "5:     prices = [float(item[\"price\"]) for item in items if item.get(\"price\") is not None]\n6:     return {\n7:         \"order_id\": order_id,\n8:         \"item_count\": len(items),\n9:         \"average_price\": average_price(prices),"
+      },
+      {
+        "path": "order_service.py",
+        "line": 8,
+        "excerpt": "6:     return {\n7:         \"order_id\": order_id,\n8:         \"item_count\": len(items),\n9:         \"average_price\": average_price(prices),\n10:     }"
+      },
+      {
+        "path": "pricing.py",
+        "line": 1,
+        "excerpt": "1: def average_price(prices: list[float]) -> float:\n2:     \"\"\"Return the average price, or zero when an order has no priced items.\"\"\"\n3:     if not prices:"
+      },
+      {
+        "path": "order_service.py",
+        "line": 6,
+        "excerpt": "4: def summarize_order(order_id: str, items: list[dict]) -> dict:\n5:     prices = [float(item[\"price\"]) for item in items if item.get(\"price\") is not None]\n6:     return {\n7:         \"order_id\": order_id,\n8:         \"item_count\": len(items),"
+      }
+    ]
+  },
+  "dependencies": {
+    "status": "ok",
+    "manifests": [
+      {
+        "path": "requirements.txt",
+        "lines": []
+      }
+    ],
+    "imports": [
+      {
+        "path": "app.py",
+        "line": 1,
+        "text": "from order_service import summarize_order"
+      },
+      {
+        "path": "order_service.py",
+        "line": 1,
+        "text": "from pricing import average_price"
+      },
+      {
+        "path": "tests/test_order_service.py",
+        "line": 1,
+        "text": "import sys"
+      },
+      {
+        "path": "tests/test_order_service.py",
+        "line": 2,
+        "text": "import unittest"
+      },
+      {
+        "path": "tests/test_order_service.py",
+        "line": 3,
+        "text": "from pathlib import Path"
+      },
+      {
+        "path": "tests/test_order_service.py",
+        "line": 7,
+        "text": "from order_service import summarize_order"
+      }
+    ]
+  },
+  "issue": "Order summary crashes when an order has no priced items",
+  "diagnosis": null,
+  "validation_errors": [],
+  "summary": {
+    "issue": "Order summary crashes when an order has no priced items",
+    "exception": "ZeroDivisionError: division by zero",
+    "likely_fault": {
+      "path": "pricing.py",
+      "line": 3
+    },
+    "causal_path": [
+      {
+        "path": "app.py",
+        "line": 5
+      },
+      {
+        "path": "order_service.py",
+        "line": 9
+      },
+      {
+        "path": "pricing.py",
+        "line": 3
+      }
+    ],
+    "confidence": "high",
+    "preliminary_diagnosis": "The historical empty-input failure is fixed. The cited source now guards the failing path, and the regression suite passes.",
+    "next_action": "Regression monitoring is active. Latest checks are healthy.",
+    "source_line": "if not prices:"
+  },
+  "quality": {
+    "status": "ok",
+    "files_scanned": 4,
+    "findings": [
+      {
+        "category": "correctness",
+        "severity": "medium",
+        "confidence": "medium",
+        "status": "possible",
+        "path": "tests/test_order_service.py",
+        "line": 5,
+        "title": "Unchecked positional access",
+        "evidence": "sys.path.insert(0, str(Path(__file__).resolve().parents[1]))",
+        "recommendation": "Verify the sequence length before indexing."
+      }
+    ]
+  },
+  "configuration": {
+    "status": "ok",
+    "files_scanned": 0,
+    "findings": []
+  },
+  "test_inventory": {
+    "status": "ok",
+    "source_files": 3,
+    "test_files": 1,
+    "test_to_source_ratio": 0.33,
+    "expected_failures": []
+  },
+  "findings": [
+    {
+      "category": "correctness",
+      "severity": "medium",
+      "confidence": "medium",
+      "status": "possible",
+      "path": "tests/test_order_service.py",
+      "line": 5,
+      "title": "Unchecked positional access",
+      "evidence": "sys.path.insert(0, str(Path(__file__).resolve().parents[1]))",
+      "recommendation": "Verify the sequence length before indexing."
+    }
+  ],
+  "finding_counts": {
+    "critical": 0,
+    "high": 0,
+    "medium": 1,
+    "low": 0
+  },
+  "scan_parameters": {
+    "max_files": 1500,
+    "max_file_bytes": 256000,
+    "max_log_bytes": 1000000,
+    "max_findings": 80,
+    "excluded_directories": [
+      ".git",
+      ".next",
+      ".venv",
+      "__pycache__",
+      "build",
+      "coverage",
+      "dist",
+      "node_modules",
+      "target",
+      "venv"
+    ]
+  },
+  "timings_ms": {
+    "investigation": 19.42,
+    "total": 337.07
+  },
+  "model_error": "Use this evidence as input to the IBM Bob workflow in docs/BOB_WORKFLOW.md.",
+  "test_validation": {
+    "status": "passed",
+    "exit_code": 0,
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "duration_ms": 292.73,
+    "output": "test_empty_order_has_zero_average (test_order_service.OrderServiceTests.test_empty_order_has_zero_average) ... ok\ntest_summarizes_priced_items (test_order_service.OrderServiceTests.test_summarizes_priced_items) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nOK"
+  }
+}

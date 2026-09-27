@@ -1,0 +1,35 @@
+name: DevGuard regression monitor
+
+on:
+  push:
+    paths:
+      - "demo_repo/**"
+      - "debug_agent.py"
+      - "web/**"
+      - "tests/**"
+  pull_request:
+    paths:
+      - "demo_repo/**"
+      - "debug_agent.py"
+      - "web/**"
+      - "tests/**"
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run local recurrence monitor
+        run: python monitor_regression.py
+      - name: Verify browser scanner coverage
+        run: node tests/web_scanner_benchmark.cjs

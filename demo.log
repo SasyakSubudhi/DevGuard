@@ -1,0 +1,9 @@
+2026-09-26 10:00:00 ERROR order summary failed order_id=ORDER-1042
+Traceback (most recent call last):
+  File "app.py", line 5, in <module>
+    print(summarize_order("ORDER-1042", []))
+  File "order_service.py", line 9, in summarize_order
+    "average_price": average_price(prices),
+  File "pricing.py", line 3, in average_price
+    return sum(prices) / len(prices)
+ZeroDivisionError: division by zero

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DevGuard incident investigation dashboard powered by IBM Bob.">
+  <title>DevGuard | Incident Console</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
+  <div class="ambient-glow glow-one" aria-hidden="true"></div>
+  <div class="ambient-glow glow-two" aria-hidden="true"></div>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <a class="brand" href="#overview" aria-label="DevGuard dashboard home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3Zm0 4.2 4 1.5v3.1c0 3.2-1.8 6.3-4 7.5-2.2-1.2-4-4.3-4-7.5V7.7l4-1.5Z"/></svg>
+        </span>
+        <span>DevGuard</span>
+      </a>
+      <nav>
+        <a class="nav-link active" href="#overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4Zm9 0h7v4h-7V4ZM4 13h7v7H4v-7Zm9-3h7v10h-7V10Z"/></svg>Overview</a>
+        <a class="nav-link" href="#investigation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 19-4.4-4.4a7.5 7.5 0 1 0-2 2L19 21l2-2ZM5 10.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0Z"/></svg>Investigation</a>
+        <a class="nav-link" href="#findings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 1 21h22L12 2Zm1 14h-2v-2h2v2Zm0-4h-2V8h2v4Z"/></svg>Findings</a>
+        <a class="nav-link" href="#codeInspector"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8.7 5.3-6 6a1 1 0 0 0 0 1.4l6 6 1.4-1.4L4.8 12l5.3-5.3-1.4-1.4Zm6.6 0-1.4 1.4 5.3 5.3-5.3 5.3 1.4 1.4 6-6a1 1 0 0 0 0-1.4l-6-6Z"/></svg>Code</a>
+        <a class="nav-link" href="#evidence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5V3Zm3 4v2h8V7H8Zm0 4v2h8v-2H8Zm0 4v2h5v-2H8Z"/></svg>Evidence</a>
+        <a class="nav-link" href="#validation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.2 16.6-4.1-4.1 1.8-1.8 2.3 2.3 7.9-7.9 1.8 1.8-9.7 9.7Z"/></svg>Validation</a>
+      </nav>
+      <div class="sidebar-foot">
+        <span class="eyebrow">Engine</span>
+        <strong>IBM Bob workflow</strong>
+        <span class="muted">Local evidence mode</span>
+      </div>
+    </aside>
+
+    <main id="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Incident workspace</p>
+          <h1>Order summary failure</h1>
+        </div>
+        <div class="top-actions">
+          <span id="statusBadge" class="status-badge"><span class="status-dot"></span>Evidence ready</span>
+          <label class="button secondary" for="reportInput">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4h2v9l3.5-3.5 1.4 1.4-5.9 5.9-5.9-5.9 1.4-1.4L11 13V4ZM5 18h14v2H5v-2Z"/></svg>
+            Analyze file
+          </label>
+          <input id="reportInput" type="file" hidden>
+        </div>
+      </header>
+
+      <section id="overview" class="hero panel">
+        <div class="hero-main">
+          <div class="hero-label"><span class="pulse" aria-hidden="true"></span><span id="exception">ZeroDivisionError</span></div>
+          <h2 id="issue">Order summary crashes when an order has no priced items</h2>
+          <p id="diagnosis">The failure occurs where a calculation divides by zero. An empty collection reaches the denominator calculation.</p>
+          <div class="location-row">
+            <span class="muted">Likely fault</span>
+            <code id="faultLocation">pricing.py:3</code>
+            <span id="confidence" class="confidence">High confidence</span>
+          </div>
+        </div>
+        <div class="hero-score" aria-label="Root cause confidence 94 percent">
+          <div class="score-ring"><span>94<small>%</small></span></div>
+          <p>Evidence confidence</p>
+        </div>
+      </section>
+
+      <section id="dropZone" class="drop-zone" tabindex="0" role="button" aria-label="Choose a file to analyze">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 7 8h3v5h4V8h3l-5-5ZM5 15v5h14v-5h2v7H3v-7h2Z"/></svg>
+        <div><strong>Drop any file here</strong><span>Source, logs, configuration, JSON reports, and binaries up to 5 MB</span></div>
+        <span class="local-pill">Local analysis</span>
+      </section>
+
+      <section class="metrics" aria-label="Performance metrics">
+        <article class="metric panel"><span class="metric-icon green"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm1 5v4.6l3.2 1.9-1 1.7L11 12.7V7h2Z"/></svg></span><div><span class="muted">Total analysis</span><strong id="totalTime">354 ms</strong></div></article>
+        <article class="metric panel"><span class="metric-icon blue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v3H4V5Zm0 5h10v3H4v-3Zm0 5h13v3H4v-3Z"/></svg></span><div><span class="muted">Files scanned</span><strong id="filesScanned">4</strong></div></article>
+        <article class="metric panel"><span class="metric-icon amber"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 1 21h22L12 2Zm1 14h-2v-2h2v2Zm0-4h-2V8h2v4Z"/></svg></span><div><span class="muted">Log events</span><strong id="eventCount">6</strong></div></article>
+        <article class="metric panel"><span class="metric-icon violet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6v2h4v16H5V5h4V3Zm2 2h2V4h-2v1Zm-3 4v2h8V9H8Zm0 4v2h8v-2H8Z"/></svg></span><div><span class="muted">Test state</span><strong id="testState">Known failure</strong></div></article>
+      </section>
+
+      <section id="investigation" class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">Parallel analysis</p><h2>Investigation agents</h2></div><span class="live-label"><span class="status-dot"></span>Completed</span></div>
+        <div class="agent-grid">
+          <article class="agent panel"><span class="agent-number">01</span><div class="agent-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4V4Zm3 4v2h10V8H7Zm0 4v2h7v-2H7Zm0 4v2h4v-2H7Z"/></svg></div><h3>Log investigator</h3><p>Parsed the failure timeline and extracted the exception and stack frames.</p><span class="agent-result" id="logResult">6 relevant events</span></article>
+          <article class="agent panel"><span class="agent-number">02</span><div class="agent-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5-6 7 6 7 1.5-1.3L4.7 12l4.8-5.7L8 5Zm8 0-1.5 1.3 4.8 5.7-4.8 5.7L16 19l6-7-6-7Z"/></svg></div><h3>Code investigator</h3><p>Resolved stack frames and ranked relevant source locations.</p><span class="agent-result" id="codeResult">3 stack matches</span></article>
+          <article class="agent panel"><span class="agent-number">03</span><div class="agent-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5Zm0 2.3L17 7l-5 2.8L7 7l5-2.7ZM5 8.7l6 3.4v6.8l-6-3.3V8.7Zm8 10.2v-6.8l6-3.4v6.9l-6 3.3Z"/></svg></div><h3>Dependency investigator</h3><p>Checked manifests and imports for related dependency risks.</p><span class="agent-result" id="dependencyResult">No external blocker</span></article>
+        </div>
+      </section>
+
+      <section id="findings" class="panel findings-panel">
+        <div class="section-heading compact"><div><p class="eyebrow">Cross-domain scan</p><h2>Prioritized findings</h2></div><span class="count" id="findingCount">0 findings</span></div>
+        <div class="severity-strip" aria-label="Finding counts by severity">
+          <span><b id="criticalCount">0</b> Critical</span><span><b id="highCount">0</b> High</span><span><b id="mediumCount">0</b> Medium</span><span><b id="lowCount">0</b> Low</span>
+        </div>
+        <div id="findingList" class="finding-list"></div>
+        <button id="showMoreFindings" class="button secondary findings-more" type="button" hidden>Show more findings</button>
+      </section>
+
+      <section id="codeInspector" class="panel code-inspector">
+        <div class="section-heading compact">
+          <div><p class="eyebrow">Execution trace</p><h2>Code-level explanation</h2></div>
+          <span id="codeRiskBadge" class="tag danger">Execution blocker</span>
+        </div>
+        <div id="bugTabs" class="bug-tabs" role="tablist" aria-label="Detected code problems"></div>
+        <div class="code-inspector-grid">
+          <div class="code-window">
+            <div class="code-window-bar">
+              <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <code id="codeFilename">pricing.py</code>
+            </div>
+            <pre id="codePreview" aria-label="Relevant source code"></pre>
+          </div>
+          <aside class="bug-explanation">
+            <span id="explanationLabel" class="explanation-label">Why execution stops</span>
+            <h3 id="bugTitle">Division by zero</h3>
+            <p id="bugExplanation">An empty collection makes the denominator zero. Python raises an exception immediately, so the current function cannot return a result and the order summary is never completed.</p>
+            <div class="impact-chain" aria-label="Failure propagation">
+              <span>Invalid input</span><b>→</b><span>Exception raised</span><b>→</b><span>Request stops</span>
+            </div>
+            <p id="bugResolution" class="resolution-note">The empty-input guard now prevents this historical failure.</p>
+          </aside>
+        </div>
+      </section>
+
+      <div class="content-grid">
+        <section id="evidence" class="panel evidence-panel">
+          <div class="section-heading compact"><div><p class="eyebrow">Trace evidence</p><h2>Causal path</h2></div><span class="count" id="pathCount">3 frames</span></div>
+          <ol id="causalPath" class="timeline"></ol>
+        </section>
+
+        <section id="validation" class="panel validation-panel">
+          <div class="section-heading compact"><div><p class="eyebrow">Isolated execution</p><h2>Test validation</h2></div><span id="validationBadge" class="tag warning">Expected failure</span></div>
+          <div class="validation-summary">
+            <div><span class="muted">Duration</span><strong id="validationTime">325 ms</strong></div>
+            <div><span class="muted">Repository modified</span><strong class="safe">No</strong></div>
+          </div>
+          <pre id="testOutput" tabindex="0">Loading validation output…</pre>
+        </section>
+      </div>
+
+      <section class="panel next-action">
+        <div class="next-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg></div>
+        <div><p class="eyebrow">Recommended next action</p><h2 id="nextAction">Guard the empty collection before division and add a regression test.</h2></div>
+        <a class="button primary" href="../docs/BOB_WORKFLOW.md">Open Bob workflow</a>
+      </section>
+
+      <p id="loadMessage" class="load-message" role="status" aria-live="polite"></p>
+    </main>
+  </div>
+  <nav class="scroll-dock" aria-label="Dashboard sections">
+    <a href="#overview" class="dock-link active" aria-label="Overview"><span></span><em>Overview</em></a>
+    <a href="#investigation" class="dock-link" aria-label="Investigation"><span></span><em>Investigation</em></a>
+    <a href="#findings" class="dock-link" aria-label="Findings"><span></span><em>Findings</em></a>
+    <a href="#codeInspector" class="dock-link" aria-label="Code"><span></span><em>Code</em></a>
+    <a href="#evidence" class="dock-link" aria-label="Evidence"><span></span><em>Evidence</em></a>
+    <a href="#validation" class="dock-link" aria-label="Validation"><span></span><em>Validation</em></a>
+  </nav>
+  <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 5-7 7 1.8 1.8 4-4V20h2.4V9.8l4 4L19 12l-7-7Z"/></svg>
+  </button>
+  <script src="app.js?v=10"></script>
+</body>
+</html>
